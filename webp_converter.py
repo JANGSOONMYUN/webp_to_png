@@ -1,6 +1,7 @@
 import os
 from PIL import Image
 import shutil
+import sys
 
 def convert_webp_to_png(src_path, dest_path):
     """Converts a WEBP image to PNG format."""
@@ -28,7 +29,15 @@ def traverse_and_convert(directory):
                 convert_webp_to_png(full_path, new_path)
                 move_to_child_directory(full_path)
                 print(f"Converted {full_path} to {new_path} and moved the original to {os.path.join(dirpath, 'original_webp', filename)}")
-
+    
 if __name__ == "__main__":
-    base_directory = './'
+    if len(sys.argv) != 2:
+        print("Usage: python webp_converter.py <directory_path>")
+        sys.exit(1)
+    
+    base_directory = sys.argv[1]
+    if not os.path.isdir(base_directory):
+        print(f"Error: {base_directory} is not a valid directory.")
+        sys.exit(1)
+    
     traverse_and_convert(base_directory)
